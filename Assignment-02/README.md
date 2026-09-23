@@ -1,29 +1,6 @@
-# KitabGhar Digital — Web Technologies (FA26) Assignments Repository
+# KitabGhar Digital — React Bookstore (Student & Teacher Guide)
 
-Welcome to the multi-assignment repository for **KitabGhar Digital**. Each assignment is cleanly separated into its own self-contained directory:
-
-| Directory | Assignment | Key Focus |
-| :--- | :--- | :--- |
-| [**`Assignment-02/`**](./Assignment-02/) | **Assignment #2** | Component-Driven React, Semantic HTML5, Initial Components, Hybrid CSS & Live REST API Integration |
-| [**`Assignment-03/`**](./Assignment-03/) | **Assignment #3** | **Complete Migration to 100% Tailwind CSS v4**, Multi-Component Suite (Wishlist, Audio Player Bar, Reviews, Checkout, Author Spotlight, Newsletter) & Full Responsive Design |
-
----
-
-## 🚀 Quick Start Guide
-
-### Running Assignment #2:
-```bash
-cd Assignment-02
-npm install
-npm run dev
-```
-
-### Running Assignment #3 (Tailwind CSS Version):
-```bash
-cd Assignment-03
-npm install
-npm run dev
-```
+Welcome to **KitabGhar Digital**! This application is designed for **Web Technologies (FA26)** to demonstrate how a modern web application bridges **Semantic HTML5/CSS3** (Week 1) with **Component-Driven React and Live REST APIs** (Week 2).
 
 ---
 
