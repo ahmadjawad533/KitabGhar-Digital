@@ -157,6 +157,11 @@ export default function SubHeader({ activeTab, onSelectTab, bookCount, cartCount
             <span className="font-mono text-emerald-400 font-semibold">
               &lt;{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}View /&gt;
             </span>
+            {cartCount > 0 && (
+              <span className="ml-1 text-[11px] text-indigo-300 bg-indigo-950 px-1.5 py-0.5 rounded border border-indigo-800">
+                Cart: {cartCount}
+              </span>
+            )}
           </div>
 
         </div>

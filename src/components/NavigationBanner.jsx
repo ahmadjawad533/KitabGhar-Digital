@@ -15,7 +15,7 @@ import React from 'react';
  *    - Horizontal responsive scrolling for mobile: `overflow-x-auto no-scrollbar`
  * ============================================================================
  */
-export default function NavigationBanner({ activeTab, onSelectTab, bookCount, cartCount }) {
+export default function NavigationBanner({ activeTab, onSelectTab, bookCount, _cartCount }) {
   const navItems = [
     {
       id: 'catalog',

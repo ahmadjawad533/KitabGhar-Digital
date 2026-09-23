@@ -4,7 +4,14 @@ import React from 'react';
  * Tailwind-styled top bar. Props provide the connection status, cart count,
  * and click handlers; responsive utilities stack the layout on small screens.
  */
-export default function Header({ cartCount, onOpenCart, apiStatus, onRefresh }) {
+export default function Header({
+  cartCount,
+  onOpenCart,
+  wishlistCount = 0,
+  onOpenWishlist,
+  apiStatus,
+  onRefresh,
+}) {
   const isLive = apiStatus === 'live';
   const statusLabel = isLive ? 'Live API Connected' : apiStatus === 'local' ? 'Local Catalog' : 'Offline / Sample Data';
 
@@ -27,7 +34,7 @@ export default function Header({ cartCount, onOpenCart, apiStatus, onRefresh }) 
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           <button
             type="button"
             className={`flex cursor-pointer items-center gap-2 rounded-full border px-[14px]! py-[6px]! text-[0.8rem] font-semibold transition-all duration-250 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white ${
@@ -46,6 +53,20 @@ export default function Header({ cartCount, onOpenCart, apiStatus, onRefresh }) 
               }`}
             />
             <span>{statusLabel}</span>
+          </button>
+
+          {/* Wishlist Button */}
+          <button
+            type="button"
+            className="flex cursor-pointer items-center gap-2 rounded-full border border-pink-400/30 bg-pink-500/10 px-3.5! py-2! text-[0.85rem] font-semibold text-pink-200 transition-all duration-250 hover:-translate-y-px hover:bg-pink-500/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            onClick={onOpenWishlist}
+            title="View Wishlist"
+            aria-label={`View wishlist with ${wishlistCount} saved books`}
+          >
+            <span>❤️ Wishlist</span>
+            <span className="rounded-full bg-pink-600 px-2! py-[2px]! text-[0.75rem] font-bold text-white">
+              {wishlistCount}
+            </span>
           </button>
 
           <button

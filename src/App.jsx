@@ -11,14 +11,26 @@ import { INITIAL_BOOKS } from './data/booksData';
 
 // Component Imports
 import Header from './components/Header';
+import SubHeader from './components/SubHeader';
 import Controls from './components/Controls';
 import BookCard from './components/BookCard';
 import BookCardClone from './components/BookCardClone';
 import BookModal from './components/BookModal';
 import CartDrawer from './components/CartDrawer';
 import FeaturesGrid from './components/FeaturesGrid';
+import StudentGuideView from './components/StudentGuideView';
+import AnalyticsView from './components/AnalyticsView';
+import AboutStoreView from './components/AboutStoreView';
 import SiteFooter from './components/SiteFooter';
 import Toast from './components/Toast';
+
+// NEW Component Imports
+import WishlistDrawer from './components/WishlistDrawer';
+import AudioPlayerBar from './components/AudioPlayerBar';
+import BookReviewsModal from './components/BookReviewsModal';
+import CheckoutModal from './components/CheckoutModal';
+import AuthorSpotlight from './components/AuthorSpotlight';
+import NewsletterBanner from './components/NewsletterBanner';
 
 import './App.css';
 
@@ -71,6 +83,11 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState(null);
   // const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [activeTab, setActiveTab] = useState('catalog'); // 'catalog' | 'features' | 'guide' | 'analytics' | 'about'
+  const [wishlist, setWishlist] = useState([]);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [activeAudioBook, setActiveAudioBook] = useState(null);
+  const [reviewBook, setReviewBook] = useState(null);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   // -------------------------------------------------------------
   // 2. TOAST NOTIFICATION HELPER
@@ -195,9 +212,74 @@ export default function App() {
   };
 
   const handleCheckout = () => {
-    setCart([]);
+    if (cart.length === 0) {
+      showToast('⚠️ Your shopping cart is empty.');
+      return;
+    }
     setIsCartOpen(false);
-    showToast('🎉 Thank you for your order! (Demo checkout completed)');
+    setIsCheckoutOpen(true);
+  };
+
+  const handleOrderPlaced = (order) => {
+    setCart([]);
+    showToast(`🎉 Order ${order.orderId} placed successfully!`);
+  };
+
+  // -------------------------------------------------------------
+  // WISHLIST HANDLERS
+  // -------------------------------------------------------------
+  const handleToggleWishlist = (book) => {
+    const bookId = book.id || book._id;
+    const isSaved = wishlist.some((b) => (b.id || b._id) === bookId);
+    if (isSaved) {
+      setWishlist((prev) => prev.filter((b) => (b.id || b._id) !== bookId));
+      showToast(`Removed "${book.title}" from Wishlist.`);
+    } else {
+      setWishlist((prev) => [...prev, book]);
+      showToast(`❤️ Saved "${book.title}" to Wishlist!`);
+    }
+  };
+
+  const handleRemoveFromWishlist = (bookId) => {
+    setWishlist((prev) => prev.filter((b) => (b.id || b._id) !== bookId));
+    showToast('Item removed from wishlist.');
+  };
+
+  const handleClearWishlist = () => {
+    setWishlist([]);
+    showToast('Wishlist cleared.');
+  };
+
+  const handleMoveWishlistToCart = (book) => {
+    handleAddToCart(book);
+    handleRemoveFromWishlist(book.id || book._id);
+  };
+
+  // -------------------------------------------------------------
+  // AUDIO & REVIEWS HANDLERS
+  // -------------------------------------------------------------
+  const handlePlayAudio = (book) => {
+    setActiveAudioBook(book);
+    showToast(`🎧 Now Playing: "${book.title}"`);
+  };
+
+  const handleOpenReviews = (book) => {
+    setReviewBook(book);
+  };
+
+  const handleAddReview = (book) => {
+    showToast(`⭐ Review posted for "${book.title}"!`);
+  };
+
+  const handleSelectAuthor = (searchTerm) => {
+    setSearchQuery(searchTerm);
+    setSelectedCategory('All');
+    setActiveTab('catalog');
+    showToast(`🔍 Showing works by "${searchTerm}"`);
+  };
+
+  const handleNewsletterSubscribe = (email, topic) => {
+    showToast(`📬 Subscribed ${email} to ${topic} digest!`);
   };
 
   const totalCartCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -227,17 +309,18 @@ export default function App() {
 
   return (
     <div className="app-layout">
-      {/* 1. Header with Live Status & Cart Trigger */}
+      {/* 1. Header with Live Status, Wishlist & Cart Trigger */}
       <Header
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
+        wishlistCount={wishlist.length}
+        onOpenWishlist={() => setIsWishlistOpen(true)}
         apiStatus={apiStatus}
         onRefresh={handleManualRefresh}
       />
 
-
-      {/* 2. Sub-Header Navigation Bar (Sample Header with 5 Views) */}
-      {/* <SubHeader
+      {/* 2. Sub-Header Navigation Bar (Switch between 5 Views) */}
+      <SubHeader
         activeTab={activeTab}
         onSelectTab={(tab) => {
           setActiveTab(tab);
@@ -245,10 +328,9 @@ export default function App() {
         }}
         bookCount={filteredBooks.length}
         cartCount={totalCartCount}
-      /> */}
+      />
 
       {/* 3. Main Content Container (Dynamically Switched by activeTab) */}
-
       <main className="main-container">
         {/* VIEW 1: BOOK CATALOG VIEW */}
         {activeTab === 'catalog' && (
@@ -264,9 +346,6 @@ export default function App() {
                 showToast(`Filtered by: ${cat}`);
               }}
             />
-
-
-                 <BookCardClone />  
 
             {/* Dynamic Section Header */}
             <div className="section-header">
@@ -290,14 +369,22 @@ export default function App() {
               </div>
             ) : filteredBooks.length > 0 ? (
               <section className="book-grid" aria-label="Book collection">
-                {filteredBooks.map((book) => (
-                  <BookCard
-                    key={book.id || book._id}
-                    book={book}
-                    onPreview={setActivePreviewBook}
-                    onAddToCart={handleAddToCart}
-                  />
-                ))}
+                {filteredBooks.map((book) => {
+                  const bookId = book.id || book._id;
+                  const isWishlisted = wishlist.some((b) => (b.id || b._id) === bookId);
+                  return (
+                    <BookCard
+                      key={bookId}
+                      book={book}
+                      onPreview={setActivePreviewBook}
+                      onAddToCart={handleAddToCart}
+                      isWishlisted={isWishlisted}
+                      onToggleWishlist={handleToggleWishlist}
+                      onOpenReviews={handleOpenReviews}
+                      onPlayAudio={handlePlayAudio}
+                    />
+                  );
+                })}
               </section>
             ) : (
               <div className="empty-state">
@@ -319,8 +406,15 @@ export default function App() {
                 </button>
               </div>
             )}
-            {/* Separate array-and-map example; catalog filters do not affect it. */}
-            
+
+            {/* NEW COMPONENT: Author Spotlight Showcase */}
+            <AuthorSpotlight onSelectAuthor={handleSelectAuthor} />
+
+            {/* In-Class Lecture Demonstration Grid */}
+            <BookCardClone />
+
+            {/* NEW COMPONENT: Promotional Newsletter Banner */}
+            <NewsletterBanner onSubscribe={handleNewsletterSubscribe} />
           </>
         )}
 
@@ -339,26 +433,23 @@ export default function App() {
         )}
 
         {/* VIEW 3: STUDENT ARCHITECTURE & TAILWIND GUIDE */}
-        {/* Uncomment and import StudentGuideView to enable this view */}
-        {/* {activeTab === 'guide' && (
+        {activeTab === 'guide' && (
           <StudentGuideView onSwitchToCatalog={() => setActiveTab('catalog')} />
-        )} */}
+        )}
 
         {/* VIEW 4: REAL-TIME STORE ANALYTICS */}
-        {/* Uncomment and import AnalyticsView to enable this view */}
-        {/* {activeTab === 'analytics' && (
+        {activeTab === 'analytics' && (
           <AnalyticsView
             books={books}
             cart={cart}
             apiStatus={apiStatus}
           />
-        )} */}
+        )}
 
         {/* VIEW 5: ABOUT STORE & TECH STACK */}
-        {/* Uncomment and import AboutStoreView to enable this view */}
-        {/* {activeTab === 'about' && (
+        {activeTab === 'about' && (
           <AboutStoreView />
-        )} */}
+        )}
       </main>
 
       {/* 5. Quick Preview Modal (with Real Audio Player & PDF Access) */}
@@ -379,12 +470,46 @@ export default function App() {
         onCheckout={handleCheckout}
       />
 
+      {/* NEW COMPONENT: Wishlist Drawer */}
+      <WishlistDrawer
+        isOpen={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+        wishlistItems={wishlist}
+        onRemoveFromWishlist={handleRemoveFromWishlist}
+        onMoveToCart={handleMoveWishlistToCart}
+        onClearWishlist={handleClearWishlist}
+      />
+
+      {/* NEW COMPONENT: Student & Reader Reviews Modal */}
+      <BookReviewsModal
+        book={reviewBook}
+        onClose={() => setReviewBook(null)}
+        onAddReview={handleAddReview}
+      />
+
+      {/* NEW COMPONENT: Campus Delivery & Checkout Modal */}
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        cartItems={cart}
+        onOrderPlaced={handleOrderPlaced}
+      />
+
+      {/* NEW COMPONENT: Persistent Mini Audio Player Bar */}
+      <AudioPlayerBar
+        book={activeAudioBook}
+        onClose={() => setActiveAudioBook(null)}
+      />
+
       {/* 7. Action Toast Notification */}
       <Toast message={toastMessage} />
 
       {/* 8. Site Footer */}
       <SiteFooter
-        onSelectCategory={(cat) => setSelectedCategory(cat)}
+        onSelectCategory={(cat) => {
+          setSelectedCategory(cat);
+          setActiveTab('catalog');
+        }}
       />
     </div>
   );

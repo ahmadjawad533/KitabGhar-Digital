@@ -14,11 +14,14 @@ export default function AnalyticsView({ books = [], cart = [], apiStatus }) {
   const unicodeBooksCount = books.filter((b) => b.category === 'Unicode Books').length;
   const pdfBooksCount = books.filter((b) => b.pdfUrl).length;
 
+  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+
   const stats = [
     { label: 'Total Catalog Books', value: totalBooks, icon: '📚', color: 'from-blue-600 to-indigo-600' },
     { label: 'Studio Audiobooks', value: audioBooksCount, icon: '🎧', color: 'from-purple-600 to-indigo-600' },
     { label: 'Unicode & Nastaliq Books', value: unicodeBooksCount, icon: '🔤', color: 'from-teal-600 to-emerald-600' },
     { label: 'Instant PDF Books', value: pdfBooksCount, icon: '📄', color: 'from-amber-600 to-orange-600' },
+    { label: 'Items in Active Cart', value: cartCount, icon: '🛒', color: 'from-rose-600 to-pink-600' },
   ];
 
   return (
