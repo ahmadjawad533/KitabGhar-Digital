@@ -32,29 +32,54 @@ const otherBooks = [
     description: 'Ideas for planning trips and recording your adventures.',
     price: 'Rs. 650',
     icon: '🌍',
+  },
+   {
+    id: 5,
+    title: 'Journal Clone',
+    author: 'Khan',
+    description: 'Ideas for planning trips and recording your adventures.',
+    price: 'Rs. 650',
+    icon: '🌍',
   }
 ];
 
-const flag = 'JS Code is easy';
+var flag = 'in Class Section B';
 
 // No props, state, API calls, or filters: just array → map() → cards.
 export default function BookCardClone() {
   
-
+  // State and other logic can be added here if needed in the future.
 
   return (
 
     // JSX section with a heading and a grid of cards. The heading has a bottom margin of 24px (mb-6). The grid has 1 column by default, 2 columns on small screens (sm:grid-cols-2), and 3 columns on large screens (lg:grid-cols-3). Each card is an article element with a border, background color, and shadow. The card contains an icon, title, author, description, and price.
     
-    <section className="mt-12!" aria-labelledby="other-books-title">
+    <section className="mt-6!" aria-labelledby="other-books-title">
           {/* mt mean margin top */}
           {/* mb mean margin bottom */}
           {/* HTML root font size is 16px */}
           {/* tailwind default spacing unit is 0.25rem so 0.25x16 = 4px */}
           {/* mt-12 mean 48px */}
           {/* mb-6 mean 24px */}
+          {/* Yes, normally browsers use 16px as the default font size for the root <html> element. */}
+          {/* Tailwind uses a default spacing increment of 0.25rem */}
 
-      <h2 id="other-books-title" className="mb-12! text-2xl font-bold text-slate-900">
+{/* 
+          | Tailwind | Meaning             | CSS property      |
+| -------- | ------------------- | ----------------- |
+| `mt`     | Margin Top          | `margin-top`      |
+| `mb`     | Margin Bottom       | `margin-bottom`   |
+| `ml`     | Margin Left         | `margin-left`     |
+| `mr`     | Margin Right        | `margin-right`    |
+| `mx`     | Margin left + right | horizontal margin |
+| `my`     | Margin top + bottom | vertical margin   |
+| `m`      | All four sides      | margin            | */}
+
+{/* document.getElementById("other-books-title"); */}
+    
+    <h1> I am testing JS {flag} </h1>
+
+    <h2 id="other-books-title" className="mb-12! text-2xl font-bold text-slate-950">
         Others Category Books
       </h2>
 
@@ -63,26 +88,37 @@ export default function BookCardClone() {
               {/* xl:grid-cols-4 sets 4 columns at extra-large widths */}
 
       {/* grid enables Grid; grid-cols-1 sets 1 column; gap-6 adds spacing; sm:grid-cols-2 and lg:grid-cols-3 set 2 and 3 columns at larger widths. */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+        
+{/*         
+        | Prefix | Minimum width |
+| ------ | ------------: |
+| `sm:`  |         640px |
+| `md:`  |         768px |
+| `lg:`  |        1024px |
+| `xl:`  |        1280px |
+| `2xl:` |        1536px | */}
+        
         {/* 3. map() creates one card per book. A unique key identifies each card. */}
         
-        {otherBooks.map((book) => (
+        {otherBooks.map((abc) => (
 
-          <article key={book.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <article key={abc.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
             {/* flex enables Flexbox; h-36 sets height; items-center and justify-center center the icon vertically and horizontally; bg-indigo-100 sets the background; text-5xl sizes the icon. */}
-            
             {/* h-36 means 144px */}
-            <div className="flex h-36 items-center justify-center bg-indigo-500 text-5xl" aria-hidden="true">
-              {book.icon}
+            
+            <div className="flex h-36 items-center justify-center bg-slate-500 text-5xl" aria-hidden="true">
+              {abc.icon}
             </div>
+
 
             {/* flex enables Flexbox; flex-col stacks content vertically; gap-3 spaces items; p-6! adds padding with !important to override the global CSS reset. */}
             {/* gap-3 mean 12px gap and p-6 mean 24px padding */}
             {/* text-xl → extra-large font size: 1.25rem, usually 20px. */}
             <div className="flex flex-col gap-3 p-6!">
-              <h3 className="text-2xl font-bold text-slate-800"> {book.title} </h3>
-              <p className="text-sm text-slate-400"> By {book.author}</p>
-              <p className="text-base text-slate-600">{book.description}</p>
+              <h3 className="text-2xl font-bold text-slate-800"> {abc.title} </h3>
+              <p className="text-sm text-slate-400"> By {abc.author}</p>
+              <p className="text-base text-slate-600">{abc.description}</p>
               <p className="text-lg font-semibold text-indigo-600">{flag}</p>
             {/* 
             
