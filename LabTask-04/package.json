@@ -1,7 +1,7 @@
 {
-  "name": "myreactjsapp",
+  "name": "lab-task-04",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,11 +11,9 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "framer-motion": "^13.4.3",
     "lucide-react": "^1.48.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.4",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

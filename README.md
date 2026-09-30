@@ -6,6 +6,7 @@ Welcome to the multi-assignment repository for **KitabGhar Digital**. Each assig
 | :--- | :--- | :--- |
 | [**`Assignment-02/`**](./Assignment-02/) | **Assignment #2** | Component-Driven React, Semantic HTML5, Initial Components, Hybrid CSS & Live REST API Integration |
 | [**`Assignment-03/`**](./Assignment-03/) | **Assignment #3** | **Complete Migration to 100% Tailwind CSS v4**, Multi-Component Suite (Wishlist, Audio Player Bar, Reviews, Checkout, Author Spotlight, Newsletter) & Full Responsive Design |
+| [**`LabTask-04/`**](./LabTask-04/) | **Lab Task #4** | **JavaScript Array Methods (`map`, `filter`, `find`)**, PDF Reader Integration & RTL Unicode Urdu Book Handling |
 
 ---
 
@@ -23,6 +24,13 @@ npm run dev
 cd Assignment-03
 npm install
 npm run dev
+```
+
+### Running Lab Task #4 (Array Methods & PDF/Unicode Reader):
+```bash
+cd LabTask-04
+yarn install
+yarn dev
 ```
 
 ---
